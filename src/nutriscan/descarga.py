@@ -49,7 +49,11 @@ def descargar() -> dict:
                 with requests.get(url, headers=encabezados, stream=True, timeout=60) as r:
                     r.raise_for_status()
                     if r.status_code == 200:
+                        # Respuesta completa: el tamaño y la fecha válidos son los de
+                        # ESTA respuesta (el archivo pudo cambiar desde el HEAD).
                         ya = 0
+                        total = int(r.headers["Content-Length"])
+                        fecha_servidor = r.headers.get("Last-Modified", fecha_servidor)
                     with open(parcial, "ab" if ya else "wb") as f, tqdm(
                         total=total, initial=ya, unit="B", unit_scale=True, desc="Descargando"
                     ) as barra:

@@ -23,7 +23,7 @@ paises:
 spark:
   app_name: "NutriScanCO"
   # Memoria del "driver" (el proceso que corre en tu PC). El equipo tiene 23 GB.
-  driver_memory: "8g"
+  driver_memory: "12g"
   shuffle_partitions: 16
 
 modelado:
@@ -36,6 +36,12 @@ modelado:
   vocabulario: 5000        # palabras y pares de palabras más frecuentes
   min_documentos: 20       # una palabra debe aparecer en al menos 20 productos
   regresion_logistica: { iteraciones: 100, regularizacion: 0.001 }
-  red_neuronal: { capas_ocultas: [64], iteraciones: 100, tam_bloque: 256 }
+  # La red neuronal de Spark convierte los datos a tablas densas (filas x variables):
+  # con 5000 variables y 400 mil filas serían ~16 GB. Por eso usa solo las 1000
+  # variables más informativas (prueba ANOVA) y 200 mil productos (~1,6 GB).
+  red_neuronal: { capas_ocultas: [64], iteraciones: 100, tam_bloque: 128,
+                  variables: 1000, max_entrenamiento: 200000 }
   ruido: { niveles: [0.1, 0.2, 0.3, 0.5], truncado: [0.5] }
-  kmeans: { k_min: 2, k_max: 10, max_productos: 500000 }
+  # Se calcula la silueta de k=2 a 10, pero se elige entre k >= 3: con k=2 solo
+  # se separan productos "livianos" de "densos", lo cual no aporta información.
+  kmeans: { k_min: 2, k_max: 10, k_min_eleccion: 3, max_productos: 500000 }

@@ -7,6 +7,9 @@ Los tests verifican que ambas den el mismo resultado.
 
 Supuestos (se declaran como limitaciones en el informe):
 - Se usan azúcares TOTALES porque Open Food Facts no trae azúcares libres.
+  Ajuste: si se conocen los ingredientes y ninguno es un azúcar añadido
+  (azúcar, jarabe, miel, panela, dextrosa...), el azúcar es intrínseco
+  (lactosa, fruta) y no hay sello de azúcares.
 - Si falta grasa trans se asume 0 (no se puede afirmar exceso).
 - Un sello de nutriente solo se evalúa si hay energía y ese nutriente; si no,
   queda como None ("no evaluable"), nunca como False.
@@ -42,6 +45,9 @@ def calcular_sellos(p: dict, cfg: dict | None = None) -> dict:
         return _pct_energia(g, s[clave]["kcal_por_gramo"], e) >= s[clave]["porcentaje_energia_minimo"]
 
     r["azucares"] = por_energia("azucares", "sugars_100g")
+    texto = p.get("ingredientes_norm")
+    if r["azucares"] and texto and not any(k in texto for k in s["azucares"]["palabras_azucar_anadido"]):
+        r["azucares"] = False  # azúcar solo intrínseco
     r["grasas_saturadas"] = por_energia("grasas_saturadas", "saturated_fat_100g")
     r["grasas_trans"] = por_energia("grasas_trans", "trans_fat_100g", defecto_cero=True)
 
@@ -55,7 +61,7 @@ def calcular_sellos(p: dict, cfg: dict | None = None) -> dict:
             r["sodio"] = na >= so["mg_por_100g_minimo"]
 
     ed = s["edulcorantes"]
-    aditivos, texto = p.get("aditivos") or [], p.get("ingredientes_norm")
+    aditivos = p.get("aditivos") or []
     if aditivos or texto:
         r["edulcorantes"] = any(a in ed["aditivos"] for a in aditivos) or any(
             k in (texto or "") for k in ed["palabras_clave"])
@@ -86,18 +92,26 @@ def agregar_sellos_spark(df: DataFrame, cfg: dict | None = None) -> DataFrame:
         .otherwise(na >= so["mg_por_100g_minimo"])
     )
 
+    texto = F.coalesce(F.col("ingredientes_norm"), F.lit(""))
+    azucar_anadido = F.lit(False)
+    for k in s["azucares"]["palabras_azucar_anadido"]:
+        azucar_anadido = azucar_anadido | texto.contains(k)
+    solo_intrinseco = F.col("ingredientes_norm").isNotNull() & (F.length("ingredientes_norm") > 0) & ~azucar_anadido
+    azucares = por_energia("azucares", F.col("sugars_100g"))
+    azucares = F.when(azucares & solo_intrinseco, False).otherwise(azucares)
+
     ed = s["edulcorantes"]
     por_aditivo = F.arrays_overlap(
         F.coalesce("aditivos", F.array().cast("array<string>")),
         F.array(*[F.lit(a) for a in ed["aditivos"]]))
-    texto = F.coalesce(F.col("ingredientes_norm"), F.lit(""))
     por_texto = F.lit(False)
     for k in ed["palabras_clave"]:
         por_texto = por_texto | texto.contains(k)
-    hay_info = F.col("aditivos").isNotNull() | F.col("ingredientes_norm").isNotNull()
+    hay_info = (F.size(F.coalesce("aditivos", F.array().cast("array<string>"))) > 0) \
+        | F.col("ingredientes_norm").isNotNull()
 
     df = (
-        df.withColumn("sello_azucares", por_energia("azucares", F.col("sugars_100g")))
+        df.withColumn("sello_azucares", azucares)
         .withColumn("sello_grasas_saturadas", por_energia("grasas_saturadas", F.col("saturated_fat_100g")))
         .withColumn("sello_grasas_trans", por_energia("grasas_trans", F.coalesce("trans_fat_100g", F.lit(0.0))))
         .withColumn("sello_sodio", sodio)

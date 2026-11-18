@@ -20,7 +20,7 @@ from nutriscan.config import ruta
 from nutriscan.sellos import SELLOS, agregar_sellos_spark
 from nutriscan.spark import crear_spark
 
-MIN_PRODUCTOS_GRUPO = 30  # una categoría o marca con menos productos no se reporta
+MIN_PRODUCTOS_GRUPO = 20  # una categoría o marca con menos productos no se reporta
 
 
 def pct(cond) -> F.Column:
@@ -30,8 +30,10 @@ def pct(cond) -> F.Column:
 
 def preparar(plata: DataFrame) -> DataFrame:
     df = agregar_sellos_spark(plata)
-    categoria = F.regexp_replace(F.coalesce("main_category", "pnns_groups_2"), r"^[a-z]{2}:", "")
-    return df.withColumn("categoria", F.when(categoria != "unknown", categoria)) \
+    # Categoría: grupos PNNS (clasificación estándar de Open Food Facts, ~40 grupos).
+    # main_category es demasiado detallada: casi ninguna llega a 20 productos en Colombia.
+    pnns = F.col("pnns_groups_2")
+    return df.withColumn("categoria", F.when(pnns.isNotNull() & (pnns != "unknown"), pnns)) \
              .withColumn("tiene_ingredientes", F.col("ingredients_text").isNotNull()) \
              .withColumn("tiene_nova", F.col("nova_group").isNotNull()) \
              .withColumn("con_sellos", F.col("n_sellos") >= 1)
@@ -92,7 +94,7 @@ def main():
     guardar_csv(nova_por_pais(df), "nova_por_pais")
     guardar_csv(sellos_por(df, "pais_grupo"), "sellos_por_pais")
     guardar_csv(sellos_por(co, "categoria", MIN_PRODUCTOS_GRUPO), "sellos_colombia_por_categoria")
-    guardar_csv(sellos_por(co, "marca", MIN_PRODUCTOS_GRUPO // 3), "sellos_colombia_por_marca")
+    guardar_csv(sellos_por(co, "marca", MIN_PRODUCTOS_GRUPO), "sellos_colombia_por_marca")
     guardar_csv(
         co.filter("evaluable AND aplica").groupBy("n_sellos").count().orderBy("n_sellos"),
         "colombia_numero_de_sellos")

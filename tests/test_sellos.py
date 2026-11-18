@@ -13,7 +13,11 @@ BASE = {
 
 CASOS = {
     # 10 g azúcar * 4 = 40 kcal = 10 % de 400 kcal → justo en el umbral: SÍ
-    "azucar_en_umbral": ({"sugars_100g": 10.0}, {"azucares": True}),
+    "azucar_en_umbral": ({"sugars_100g": 10.0, "ingredientes_norm": "harina, azucar"}, {"azucares": True}),
+    # Mucho azúcar pero ningún azúcar añadido (leche entera: lactosa) → NO
+    "azucar_intrinseco": ({"sugars_100g": 20.0, "ingredientes_norm": "leche entera"}, {"azucares": False}),
+    # Sin ingredientes: se mantiene la aproximación con azúcares totales → SÍ
+    "azucar_sin_ingredientes": ({"sugars_100g": 20.0, "ingredientes_norm": None}, {"azucares": True}),
     # 9 g → 9 %: NO
     "azucar_bajo": ({"sugars_100g": 9.0}, {"azucares": False}),
     # 5 g sat * 9 = 45 kcal = 11,25 %: SÍ
@@ -38,7 +42,8 @@ CASOS = {
     # NOVA 1 (sin procesar): no aplica, cero sellos aunque tenga mucho azúcar
     "nova1": ({"nova_group": 1, "sugars_100g": 50.0}, {"aplica": False, "n_sellos": 0}),
     # varios sellos a la vez
-    "tres_sellos": ({"sugars_100g": 30.0, "saturated_fat_100g": 10.0, "sodio_mg_100g": 500.0},
+    "tres_sellos": ({"sugars_100g": 30.0, "saturated_fat_100g": 10.0, "sodio_mg_100g": 500.0,
+                     "ingredientes_norm": "azucar, aceite, sal"},
                     {"n_sellos": 3, "evaluable": True}),
 }
 
