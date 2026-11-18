@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Avance NutriScan CO</title>
+<style>
+  @page { size: Letter; margin: 1.8cm 1.9cm 1.9cm 1.9cm;
+          @bottom-left { content: "Avance (60–70 %) · NutriScan CO · Ciencia de Datos y Big Data, ETITC"; font: 8pt Helvetica, Arial, sans-serif; color: #666; }
+          @bottom-right { content: "Página " counter(page); font: 8pt Helvetica, Arial, sans-serif; color: #666; } }
+  :root { --rojo: #C8102E; --gris: #555; --borde: #cfcfcf; --fondo: #f4f4f4; }
+  * { box-sizing: border-box; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 9.6pt; line-height: 1.38; color: #111; margin: 0; background: #fff; }
+  h1 { font-size: 15pt; text-align: center; margin: 0 0 4px; line-height: 1.25; }
+  .sub { text-align: center; color: var(--gris); font-size: 9pt; margin: 0; }
+  h2 { font-size: 11.5pt; margin: 16px 0 6px; padding-bottom: 2px; border-bottom: 1.5px solid #111; break-after: avoid; }
+  h3 { font-size: 10pt; margin: 10px 0 4px; break-after: avoid; }
+  p { margin: 4px 0 6px; text-align: justify; }
+  ul, ol { margin: 4px 0 6px; padding-left: 18px; }
+  li { margin: 2px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 8px; font-size: 8.6pt; break-inside: avoid; }
+  th, td { border: 1px solid var(--borde); padding: 3px 5px; vertical-align: top; text-align: left; }
+  th { background: var(--fondo); font-weight: bold; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  .mejor { font-weight: bold; }
+  figure { margin: 8px 0 10px; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; }
+  figcaption { font-size: 8.3pt; color: var(--gris); margin-top: 2px; text-align: left; }
+  .interp { font-size: 9pt; text-align: justify; margin: 2px 0 10px; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .caja { border: 1px solid var(--borde); background: var(--fondo); padding: 6px 9px; margin: 6px 0 8px; break-inside: avoid; }
+  .ok { color: #2E7D32; font-weight: bold; }
+  .pend { color: #B26A00; font-weight: bold; }
+  .falta { color: #777; font-weight: bold; }
+  .resaltar { background: #fff3a8; padding: 0 3px; }
+  .salto { break-before: page; }
+  .peq { font-size: 8.2pt; color: var(--gris); }
+  .refs p { padding-left: 18px; text-indent: -18px; font-size: 8.4pt; text-align: left; margin: 2px 0; }
+  code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 8.3pt; background: var(--fondo); padding: 0 2px; }
+</style>
+</head>
+<body>
+
+<h1>NutriScan CO: análisis a gran escala del nivel de procesamiento y del<br>etiquetado frontal de advertencia de los alimentos empacados en Colombia</h1>
+<p class="sub">Avance del proyecto final (60–70 %) · Ciencia de Datos y Big Data · Facultad de Sistemas, ETITC</p>
+<p class="sub">Docente: Karen Paola Martínez Orjuela · Bogotá, noviembre de 2026</p>
+
+<table style="margin-top:10px">
+  <tr><th>Integrante</th><th>Código</th><th>Rol principal</th></tr>
+  <tr><td>Carlos Alfonso Fernández Salas</td><td>1065910306</td><td>Ingeniería de datos (ingesta, Spark, almacenamiento, backend del prototipo)</td></tr>
+  <tr><td>Santiago Sandoval Urrego</td><td>1030520921</td><td>Análisis y modelado (EDA, motor de sellos, modelos y red neuronal)</td></tr>
+</table>
+
+<div class="caja">
+  <b>Repositorio (lectura pública, notebooks con salidas visibles):</b>
+  <span class="resaltar">https://github.com/USUARIO/nutriscan-co</span><br>
+  <b>Para revisar:</b> <code>notebooks/01_eda.ipynb</code> (análisis exploratorio), <code>notebooks/02_modelos.ipynb</code> (modelos),
+  <code>reports/</code> (métricas, logs de ejecución y figuras) y <code>src/nutriscan/</code> (código del flujo).
+</div>
+
+<h2>1. Estado del avance</h2>
+<table>
+  <tr><th>Componente</th><th>Estado</th><th>Evidencia</th></tr>
+  <tr><td>Datos reales obtenidos y depurados</td><td class="ok">Terminado</td><td>Volcado completo del 18 nov. 2026; 4,92 M de productos (sección 3)</td></tr>
+  <tr><td>Big data: ingesta, almacenamiento y procesamiento</td><td class="ok">Terminado</td><td>Flujo PySpark bronce → plata → oro en Parquet; logs de ejecución (sección 4)</td></tr>
+  <tr><td>Motor de sellos (Res. 2492 de 2022)</td><td class="ok">Terminado</td><td>Versión Python y Spark con 16 pruebas automáticas que dan el mismo resultado</td></tr>
+  <tr><td>Análisis exploratorio</td><td class="ok">Terminado</td><td>9 gráficas con interpretación (sección 5)</td></tr>
+  <tr><td>Modelos frente a línea base</td><td class="ok">Primera versión</td><td>Regresión logística, red neuronal y K-means, con evaluación global, en Colombia y con ruido (sección 6)</td></tr>
+  <tr><td>Validación de sellos con 30 empaques</td><td class="pend">En curso</td><td>Muestra a fotografiar en supermercado</td></tr>
+  <tr><td>API por código de barras y tablero</td><td class="falta">Pendiente</td><td>Planeado del 22 al 28 nov. (sección 7)</td></tr>
+  <tr><td>DistilBERT, app con cámara/OCR, MongoDB</td><td class="falta">Opcional</td><td>Fuera del mínimo entregable</td></tr>
+</table>
+
+<h2>2. Correcciones incorporadas de la retroalimentación</h2>
+<table>
+  <tr><th style="width:32%">Observación de la docente</th><th>Cómo se atendió</th></tr>
+  <tr><td>(1) Las etiquetas NOVA se calculan con reglas sobre los ingredientes: un F1 ≥ 0,80 puede ser fácil y poco informativo.</td>
+      <td>Se comprobó: una línea base que siempre responde "ultraprocesado" ya obtiene <b>F1 = 0,80</b>. Se adoptó el <b>F1 macro</b> (promedio de ambas clases) y se reportan <b>por separado</b> la prueba global, el subconjunto colombiano (excluido del entrenamiento) y una <b>prueba de robustez</b> con ingredientes dañados. También se analizan los términos que aprende el modelo (sección 6).</td></tr>
+  <tr><td>(2) Los productos colombianos pueden ser pocos e incompletos: medirlo en la primera semana y ajustar las metas.</td>
+      <td>Se midió: <b>10.106 productos</b> colombianos, pero solo el 19 % tiene ingredientes y el 16 % tiene NOVA. Las metas se ajustaron a 3.754 productos evaluables para sellos y 1.560 para el modelo (tabla 3).</td></tr>
+  <tr><td>(3) El alcance es muy amplio: fijar un mínimo entregable.</td>
+      <td>Mínimo: flujo de datos, motor de sellos, EDA, regresión logística + red neuronal (MLP) + K-means, API de consulta y tablero. <b>Opcionales:</b> DistilBERT, app con cámara/OCR y MongoDB.</td></tr>
+</table>
+
+<h2>3. Datos reales</h2>
+<table>
+  <tr><th>Característica</th><th>Valor</th></tr>
+  <tr><td>Fuente</td><td>Open Food Facts, exportación CSV completa (<code>en.openfoodfacts.org.products.csv.gz</code>), licencia ODbL</td></tr>
+  <tr><td>Versión y fecha de descarga</td><td>Volcado publicado el 18 nov. 2026 (10:14 GMT); descargado el 18 nov. 2026 (14:40 UTC) con <code>descarga.py</code></td></tr>
+  <tr><td>Tamaño</td><td>1,54 GB comprimido · <b>14,02 GB descomprimido</b> (el anteproyecto estimaba ~9 GB: la base creció) · 2,37 GB en Parquet</td></tr>
+  <tr><td>Filas y columnas</td><td><b>4.921.304 productos × 211 columnas</b> (en realidad separado por tabuladores y sin comillas)</td></tr>
+  <tr><td>Tras la depuración (capa plata)</td><td>4.849.560 productos × 43 columnas útiles con tipos correctos</td></tr>
+</table>
+
+<h3>Tratamiento de nulos, duplicados y errores</h3>
+<table>
+  <tr><th>Problema</th><th class="n">Productos</th><th>Tratamiento y justificación</th></tr>
+  <tr><td>Código de barras inválido</td><td class="n">71.691</td><td>Descartados. Casi todos tienen más de 14 dígitos: son códigos internos de tienda, no GTIN escaneables.</td></tr>
+  <tr><td>Duplicados por código</td><td class="n">53</td><td>Se conserva la versión modificada más recientemente.</td></tr>
+  <tr><td>Nutriente imposible (&lt; 0, &gt; 100 g/100 g o &gt; 900 kcal)</td><td class="n">25.076</td><td>Se anula <b>toda</b> la tabla nutricional del producto: un valor como 272 g de carbohidratos en 100 g indica que se digitó por paquete, y entonces los demás valores tampoco son confiables.</td></tr>
+  <tr><td>Parte mayor que el todo (saturada &gt; grasa, azúcares &gt; carbohidratos)</td><td class="n">6.225</td><td>Se anula solo el valor incoherente.</td></tr>
+  <tr><td>Sin energía en kcal</td><td class="n">1.395.564</td><td>Se recupera desde kJ (7.277) o con factores de Atwater (2.140); los 1.386.147 restantes quedan "no evaluables" para sellos.</td></tr>
+  <tr><td>Nulos en nutrientes e ingredientes</td><td class="n">—</td><td><b>No se imputan</b>: un sello o un NOVA inventado sería engañoso. El producto queda "no evaluable" y la completitud se reporta (figura 1).</td></tr>
+  <tr><td>Valores textuales vacíos ("en:null", "")</td><td class="n">—</td><td>Se convierten en nulos; los ingredientes se pasan a minúscula y sin tildes para el modelo.</td></tr>
+</table>
+
+<h3>Cobertura de Colombia y metas ajustadas</h3>
+<table>
+  <tr><th>Subconjunto colombiano</th><th class="n">Productos</th><th class="n">%</th></tr>
+  <tr><td>Productos que se venden en Colombia</td><td class="n">10.106</td><td class="n">100,0</td></tr>
+  <tr><td>Con lista de ingredientes</td><td class="n">1.910</td><td class="n">18,9</td></tr>
+  <tr><td>Con grupo NOVA</td><td class="n">1.641</td><td class="n">16,2</td></tr>
+  <tr><td>Con ingredientes y NOVA (evaluación del modelo)</td><td class="n">1.560</td><td class="n">15,4</td></tr>
+  <tr><td>Evaluables para sellos y a los que aplica la norma</td><td class="n">3.754</td><td class="n">37,1</td></tr>
+</table>
+<table>
+  <tr><th>Meta del anteproyecto</th><th>Meta o criterio ajustado</th><th>Resultado actual</th></tr>
+  <tr><td>% de productos con sellos por categoría y fabricante</td><td>Sobre los 3.754 evaluables; solo categorías (grupos PNNS) y marcas con ≥ 20 productos</td><td class="ok">20 categorías y 18 marcas</td></tr>
+  <tr><td>Motor de sellos con exactitud ≥ 90 % en 30 empaques</td><td>Se mantiene; la muestra se toma de los productos evaluables</td><td class="pend">En curso</td></tr>
+  <tr><td>Clasificación NOVA 4 con F1 ≥ 0,80</td><td>F1 macro, reportado aparte en prueba global, Colombia y con ruido</td><td class="ok">0,960 global · 0,891 Colombia</td></tr>
+  <tr><td>Prototipo con respuesta &lt; 3 s</td><td>Se mantiene (API por código de barras)</td><td class="falta">Pendiente</td></tr>
+</table>
+
+<h2>4. Componente de big data</h2>
+<figure>
+  <img src="diagrama_flujo.svg" style="width:100%">
+  <figcaption><b>Figura A.</b> Flujo de datos implementado. Todo corre con Apache Spark 4.0.1 en modo local (8 núcleos, 12 GB) y se ejecuta con un solo comando: <code>bash ejecutar_flujo.sh</code>.</figcaption>
+</figure>
+<p><b>Ingesta.</b> <code>descarga.py</code> baja el volcado con reanudación y reintentos automáticos, y registra la versión del servidor. Durante la descarga, Open Food Facts publicó un volcado nuevo; el script lo detectó (encabezado <i>If-Range</i>) y empezó de cero en vez de mezclar versiones. La integridad del archivo se verificó con <code>gzip -t</code>.
+<b>Almacenamiento.</b> Data lake por capas en Parquet (columnar y comprimido): <i>bronce</i> (crudo, 32 archivos), <i>plata</i> (limpio) y <i>oro</i> (productos con sellos e indicadores). Plata y oro se particionan por país (colombia, chile, mexico, peru, otros), así un análisis de Colombia lee solo su carpeta.
+<b>Procesamiento.</b> Limpieza, motor de sellos, TF-IDF, regresión logística, red neuronal y K-means con PySpark y Spark MLlib; a pandas solo pasan tablas ya agregadas para graficar.
+<b>Configuración.</b> Los umbrales de la norma están en <code>config/sellos.yaml</code>, así un cambio regulatorio no exige tocar el código.</p>
+
+<h3>Evidencia de ejecución (logs en <code>reports/logs/</code>)</h3>
+<table>
+  <tr><th>Paso</th><th>Entrada → salida</th><th class="n">Duración</th></tr>
+  <tr><td>bronce</td><td>CSV .gz de 14 GB → 4.921.304 filas en Parquet (2,37 GB)</td><td class="n">4 min 06 s</td></tr>
+  <tr><td>plata</td><td>4.921.304 → 4.849.560 filas limpias</td><td class="n">3 min 04 s</td></tr>
+  <tr><td>oro</td><td>sellos para 4,85 M de productos + 7 tablas de indicadores</td><td class="n">1 min 57 s</td></tr>
+  <tr><td>modelos</td><td>TF-IDF (5.000 términos), 3 modelos × 13 conjuntos de evaluación</td><td class="n">18 min 04 s</td></tr>
+  <tr><td>segmentación</td><td>503.573 productos, K-means con k = 2 a 10</td><td class="n">3 min 02 s</td></tr>
+</table>
+<p>La lectura del archivo .gz es el cuello de botella: el formato gzip no se puede dividir y Spark lo lee con un solo núcleo. Por eso, después de esa lectura los datos se reparten en 32 bloques y los pasos siguientes usan todos los núcleos. El código tiene <b>35 pruebas automáticas</b> (<code>pytest</code>) para cada etapa, todas aprobadas.</p>
+
+<div class="salto"></div>
+<h2>5. Análisis exploratorio</h2>
+<p class="peq">Todas las gráficas se generan en <code>notebooks/01_eda.ipynb</code> a partir de la capa oro.</p>
+
+<figure><img src="../../reports/figuras/01_completitud.png" style="width:92%">
+<figcaption><b>Figura 1.</b> Porcentaje de productos que tienen cada dato, por país (entre paréntesis, número de productos).</figcaption></figure>
+<p class="interp">Colombia tiene 10.106 productos, pero es el país con <b>peor cobertura de ingredientes (19 %) y de NOVA (16 %)</b> entre los comparados, aunque sus marcas están mejor registradas (84 %). Solo el 38 % de los productos colombianos tiene los cuatro datos necesarios para evaluar sellos. La grasa trans casi nunca se reporta (18 %), por lo que ese sello está subestimado.</p>
+
+<div class="dos">
+<figure><img src="../../reports/figuras/02_productos_por_pais.png">
+<figcaption><b>Figura 2.</b> Países con más productos y los cuatro latinoamericanos del estudio (puesto entre paréntesis; escala logarítmica).</figcaption></figure>
+<figure><img src="../../reports/figuras/03_nova_por_pais.png">
+<figcaption><b>Figura 3.</b> Distribución del grupo NOVA entre los productos con NOVA conocido.</figcaption></figure>
+</div>
+<p class="interp"><b>Fig. 2:</b> la base está dominada por Europa y Estados Unidos (Francia sola aporta cerca de 1,3 millones de productos); Colombia ocupa el <b>puesto 40</b>, detrás de México (28.º) y delante de Chile (46.º) y Perú (70.º). Por eso el modelo se entrena con datos mundiales y Colombia se evalúa aparte.
+<b>Fig. 3:</b> en todos los grupos predominan los ultraprocesados: <b>69 % en Colombia</b>, similar a México (70 %), por debajo de Chile (76 %) y Perú (72 %) y por encima del resto del mundo (64 %). Precaución: el NOVA solo se conoce para 1.641 productos colombianos, y lo que registra la comunidad no es una muestra aleatoria del mercado.</p>
+
+<figure><img src="../../reports/figuras/04_sellos_por_pais.png" style="width:88%">
+<figcaption><b>Figura 4.</b> Porcentaje de productos evaluables que llevarían cada sello según la Resolución 2492 de 2022.</figcaption></figure>
+<p class="interp">Según la estimación, el <b>84 % de los productos colombianos evaluables llevaría al menos un sello</b>; los más frecuentes serían grasas saturadas (49 %), azúcares (46 %) y sodio (42 %). Los países son parecidos porque se aplica la misma regla a todos; Chile destaca en edulcorantes (16 %), lo que podría reflejar la reformulación de productos tras su ley de etiquetado (por verificar). Estas cifras <b>probablemente sobreestiman</b> la realidad, porque la norma aplica solo a productos con azúcares, sodio o grasas añadidos, y eso no se puede verificar sin la lista de ingredientes. Como ajuste, el sello de azúcares ya excluye los productos cuyos ingredientes no contienen azúcar añadido (por ejemplo, la leche, cuyo azúcar es la lactosa). La validación con empaques reales medirá el sesgo restante.</p>
+
+<div class="dos">
+<figure><img src="../../reports/figuras/05_colombia_numero_sellos.png">
+<figcaption><b>Figura 5.</b> Productos colombianos evaluables según su número de sellos.</figcaption></figure>
+<figure><img src="../../reports/figuras/08_colombia_sellos_vs_nova.png">
+<figcaption><b>Figura 6.</b> Colombia: porcentaje con al menos un sello según el grupo NOVA.</figcaption></figure>
+</div>
+<p class="interp"><b>Fig. 5:</b> la mayoría tendría 1 sello (33 %) o 2 sellos (42 %); el 16 % no tendría ninguno y solo 19 productos llegarían a 4. <b>Fig. 6:</b> procesamiento y sellos están relacionados: el 95 % de los ultraprocesados evaluables tendría al menos un sello, frente al 83 % de los NOVA 3. Los NOVA 1 no aparecen porque la norma no aplica a alimentos sin procesar.</p>
+
+<div class="dos">
+<figure><img src="../../reports/figuras/06_colombia_categoria.png">
+<figcaption><b>Figura 7.</b> Colombia: % con al menos un sello por categoría (las 15 con más productos entre los grupos PNNS con ≥ 20).</figcaption></figure>
+<figure><img src="../../reports/figuras/07_colombia_marca.png">
+<figcaption><b>Figura 8.</b> Colombia: % con al menos un sello por marca (las 15 con más productos entre las de ≥ 20).</figcaption></figure>
+</div>
+<p class="interp">Las bebidas endulzadas, los chocolates, la leche y el yogur y las galletas superan el 95 %, mientras que los cereales básicos (arroz, harinas, pastas) se quedan en 39 %: el motor distingue productos básicos de procesados. La leche y el yogur aparecen altos sobre todo por grasas saturadas (78 %). Por marca, las grandes lácteas (Alpina, Colanta, Latti) llegan al 100 % y las marcas de línea saludable (Taeq, Natri) quedan por debajo del 60 %. <b>Advertencia:</b> son estimaciones con pocos productos por marca (20 a 138) y datos colaborativos; no son una evaluación oficial de cumplimiento.</p>
+
+<figure><img src="../../reports/figuras/09_nutrientes_por_nova.png" style="width:80%">
+<figcaption><b>Figura 9.</b> Azúcares y sodio por grupo NOVA (muestra aleatoria del 5 % mundial; sin valores atípicos).</figcaption></figure>
+<p class="interp">Los NOVA 4 tienen la mediana de azúcares más alta (≈ 7 g/100 g), y los NOVA 3 (quesos, panes, conservas) concentran el sodio más alto (≈ 360 mg/100 g). Procesamiento y exceso de nutrientes están relacionados pero <b>no son lo mismo</b>; por eso el proyecto estima ambos por separado.</p>
+
+<div class="salto"></div>
+<h2>6. Primeros modelos</h2>
+<h3>6.1 Clasificación del procesamiento (NOVA 4 frente al resto)</h3>
+<p><b>Datos.</b> 1.127.826 productos del mundo con ingredientes y NOVA, divididos 70/15/15: del 70 % de entrenamiento (789.935) se usa una muestra aleatoria de 400.980 por memoria; validación 168.956; prueba 168.935. Los <b>1.560 productos colombianos se excluyeron del entrenamiento</b> y se evalúan aparte.
+<b>Variables.</b> Texto de ingredientes → palabras y pares de palabras → TF-IDF con los 5.000 términos más frecuentes (en al menos 20 productos).
+<b>Modelos.</b> (0) Línea base: siempre la clase mayoritaria. (1) Regresión logística (Spark MLlib). (2) Red neuronal: perceptrón multicapa de Spark MLlib, 1.000 → 64 → 2. La red usa las 1.000 variables más informativas (prueba ANOVA) y 199.529 productos de entrenamiento, porque con las 5.000 variables necesitaba unos 16 GB de memoria y el proceso falló.</p>
+
+<table>
+  <tr><th>Conjunto</th><th>Modelo</th><th class="n">n</th><th class="n">Precisión</th><th class="n">Recall</th><th class="n">F1 (NOVA 4)</th><th class="n">F1 macro</th></tr>
+  <tr><td rowspan="3">Prueba global</td><td>Línea base</td><td class="n" rowspan="3">168.935</td><td class="n">0,669</td><td class="n">1,000</td><td class="n">0,802</td><td class="n">0,401</td></tr>
+  <tr><td>Regresión logística</td><td class="n">0,981</td><td class="n">0,966</td><td class="n mejor">0,973</td><td class="n mejor">0,960</td></tr>
+  <tr><td>Red neuronal (MLP)</td><td class="n">0,968</td><td class="n">0,945</td><td class="n">0,956</td><td class="n">0,935</td></tr>
+  <tr><td rowspan="3">Colombia</td><td>Línea base</td><td class="n" rowspan="3">1.560</td><td class="n">0,722</td><td class="n">1,000</td><td class="n">0,838</td><td class="n">0,419</td></tr>
+  <tr><td>Regresión logística</td><td class="n">0,943</td><td class="n">0,933</td><td class="n mejor">0,938</td><td class="n mejor">0,891</td></tr>
+  <tr><td>Red neuronal (MLP)</td><td class="n">0,898</td><td class="n">0,930</td><td class="n">0,914</td><td class="n">0,837</td></tr>
+</table>
+
+<div class="dos">
+<figure><img src="../../reports/figuras/10_modelos_limpio.png">
+<figcaption><b>Figura 10.</b> F1 y F1 macro con texto limpio (la línea punteada marca la meta original de 0,80).</figcaption></figure>
+<figure><img src="../../reports/figuras/12_robustez_ruido.png">
+<figcaption><b>Figura 11.</b> Prueba de robustez: F1 macro cuando un porcentaje de las palabras tiene errores de letras.</figcaption></figure>
+</div>
+<p class="interp"><b>Línea base:</b> responder siempre "ultraprocesado" da <b>F1 = 0,80</b>, porque el 67 % de los productos son NOVA 4. Esto confirma la observación de la docente y justifica usar el F1 macro, donde la línea base obtiene 0,40. La <b>regresión logística</b> es el mejor modelo: F1 macro de 0,960 global y de <b>0,891 en Colombia</b>, sobre productos que nunca vio. Generaliza al mercado colombiano, aunque pierde unos 7 puntos, con más falsos positivos (4,0 % frente a 1,3 % en la prueba global). La red neuronal no la supera con las restricciones de memoria actuales.</p>
+
+<table>
+  <tr><th>F1 macro según el ruido</th><th class="n">Limpio</th><th class="n">10 %</th><th class="n">20 %</th><th class="n">30 %</th><th class="n">50 %</th><th class="n">Lista cortada a la mitad</th></tr>
+  <tr><td>Reg. logística · global</td><td class="n">0,960</td><td class="n">0,945</td><td class="n">0,926</td><td class="n">0,906</td><td class="n">0,849</td><td class="n">0,764</td></tr>
+  <tr><td>Reg. logística · Colombia</td><td class="n">0,891</td><td class="n">0,884</td><td class="n">0,873</td><td class="n">0,862</td><td class="n">0,818</td><td class="n">0,782</td></tr>
+  <tr><td>Red neuronal · global</td><td class="n">0,935</td><td class="n">0,923</td><td class="n">0,908</td><td class="n">0,892</td><td class="n">0,845</td><td class="n">0,757</td></tr>
+  <tr><td>Red neuronal · Colombia</td><td class="n">0,837</td><td class="n">0,839</td><td class="n">0,833</td><td class="n">0,814</td><td class="n">0,782</td><td class="n">0,778</td></tr>
+</table>
+<p class="interp"><b>Prueba de robustez (el aporte real del modelo).</b> Con errores de letras, como los que deja un OCR, ambos modelos se degradan de forma gradual: aun con la mitad de las palabras dañadas, la regresión mantiene 0,818 en Colombia. En cambio, <b>cortar la lista a la mitad es mucho más dañino</b>: la precisión sigue en 0,99, pero el recall cae de 0,97 a 0,66, porque los aditivos y aromas que delatan el ultraprocesamiento suelen ir al final de la lista. Para el prototipo, esto significa que la foto debe capturar la lista completa.</p>
+
+<figure><img src="../../reports/figuras/11_matrices_confusion.png" style="width:100%">
+<figcaption><b>Figura 12.</b> Matrices de confusión en la prueba global y en Colombia (filas: clase real; columnas: predicción).</figcaption></figure>
+<figure><img src="../../reports/figuras/13_terminos_influyentes.png" style="width:72%">
+<figcaption><b>Figura 13.</b> Términos con mayor peso en la regresión logística.</figcaption></figure>
+<p class="interp">Los términos que más empujan hacia NOVA 4 son justamente los <b>marcadores que usa la clasificación NOVA</b>: dextrosa, aromas (arome, aroma, flavor), maltodextrina, pectina, glucosa y carragenina. Es decir, el modelo aprende en buena parte las reglas de NOVA, como advirtió la docente. Su valor está en tolerar texto con errores, no en reemplazar las reglas cuando el texto está limpio. Para la entrega final se medirá cuánto depende de esos términos (modelo sin marcadores) y se comparará con las reglas exactas sobre el mismo texto con ruido.</p>
+
+<h3>6.2 Segmentación por perfil nutricional (K-means)</h3>
+<p>Siete variables por 100 g (energía, grasa, grasa saturada, carbohidratos, azúcares, proteína, sodio), transformadas con log(1 + x) y estandarizadas. Se usaron 503.573 productos: todos los colombianos con perfil completo y una muestra aleatoria del resto. La silueta es máxima con k = 2 (0,449), pero esa partición solo separa productos livianos de densos; entre k ≥ 3, el mejor es <b>k = 9 (silueta 0,426)</b>.</p>
+<table>
+  <tr><th>Grupo (nombre asignado)</th><th class="n">kcal</th><th class="n">Grasa</th><th class="n">Azúcar</th><th class="n">Proteína</th><th class="n">Sodio mg</th><th class="n">% NOVA 4</th><th class="n">% de Colombia</th></tr>
+  <tr><td>Panes, harinas y pastas</td><td class="n">283</td><td class="n">7,6</td><td class="n">2,7</td><td class="n">9,0</td><td class="n">440</td><td class="n">69,2</td><td class="n">24,1</td></tr>
+  <tr><td>Galletas, chocolates y snacks dulces</td><td class="n">459</td><td class="n">22,0</td><td class="n">27,5</td><td class="n">6,3</td><td class="n">140</td><td class="n">85,5</td><td class="n">22,5</td></tr>
+  <tr><td>Lácteos líquidos, salsas y preparados</td><td class="n">67</td><td class="n">1,4</td><td class="n">3,6</td><td class="n">2,4</td><td class="n">191</td><td class="n">58,8</td><td class="n">17,8</td></tr>
+  <tr><td>Quesos y embutidos grasos</td><td class="n">325</td><td class="n">26,0</td><td class="n">0,5</td><td class="n">18,1</td><td class="n">669</td><td class="n">54,6</td><td class="n">9,1</td></tr>
+  <tr><td>Bebidas y frutas con azúcar</td><td class="n">55</td><td class="n">0,1</td><td class="n">5,7</td><td class="n">0,5</td><td class="n">0</td><td class="n">42,6</td><td class="n">6,9</td></tr>
+  <tr><td>Carnes, pescados y proteicos</td><td class="n">139</td><td class="n">5,0</td><td class="n">0,4</td><td class="n">20,0</td><td class="n">400</td><td class="n">57,0</td><td class="n">6,3</td></tr>
+  <tr><td>Dulces y azucarados sin grasa</td><td class="n">322</td><td class="n">0,1</td><td class="n">55,0</td><td class="n">0,6</td><td class="n">20</td><td class="n">71,5</td><td class="n">5,9</td></tr>
+  <tr><td>Bebidas sin calorías y aguas</td><td class="n">1</td><td class="n">0,0</td><td class="n">0,0</td><td class="n">0,0</td><td class="n">0</td><td class="n">59,5</td><td class="n">4,2</td></tr>
+  <tr><td>Aceites y grasas</td><td class="n">689</td><td class="n">71,0</td><td class="n">0,0</td><td class="n">0,3</td><td class="n">0</td><td class="n">28,3</td><td class="n">3,1</td></tr>
+</table>
+<p class="interp">Valores: medianas por 100 g. Los grupos con más ultraprocesados son "galletas, chocolates y snacks dulces" (85,5 %) y "dulces y azucarados sin grasa" (71,5 %). Los 3.901 productos colombianos con perfil completo se concentran en panes, snacks dulces y lácteos (64 % entre los tres). En el % NOVA 4 de cada grupo, los productos sin NOVA conocido cuentan como "no NOVA 4".</p>
+
+<h2>7. Lo que falta, riesgos encontrados y cronograma actualizado</h2>
+<h3>Trabajo pendiente</h3>
+<ul>
+  <li><b>Ajustes finales de los modelos:</b> modelo sin términos-marcador de NOVA; comparación del modelo con las reglas exactas de NOVA sobre texto con ruido; red neuronal con más variables si la memoria lo permite.</li>
+  <li><b>Validación del motor de sellos</b> con 30 empaques fotografiados (exactitud esperada ≥ 90 %) y medición de la sobreestimación.</li>
+  <li><b>Visualización final:</b> API con FastAPI (consulta por código de barras, sellos estimados y predicción NOVA en menos de 3 s) y tablero en Streamlit con los indicadores del mercado.</li>
+  <li><b>Informe final</b> con conclusiones, limitaciones y sustentación.</li>
+</ul>
+
+<h3>Riesgos encontrados durante el avance</h3>
+<table>
+  <tr><th style="width:36%">Riesgo encontrado</th><th>Mitigación aplicada o prevista</th></tr>
+  <tr><td>Cobertura colombiana muy baja (19 % con ingredientes)</td><td>Entrenamiento con datos mundiales y evaluación aparte en Colombia; metas ajustadas al volumen real.</td></tr>
+  <tr><td>Sobreestimación de sellos (la norma solo aplica a nutrientes añadidos)</td><td>Ajuste del sello de azúcares con los ingredientes; validación con empaques; se declara como limitación.</td></tr>
+  <tr><td>La meta F1 ≥ 0,80 no era informativa</td><td>F1 macro, línea base y prueba de robustez reportados por separado.</td></tr>
+  <tr><td>Falta de memoria al entrenar la red neuronal (~16 GB)</td><td>Selección de 1.000 variables por ANOVA y muestra de 200 mil productos; Spark con 12 GB.</td></tr>
+  <tr><td>Volumen mayor al previsto (14 GB) y base que cambia a diario</td><td>Lectura única a Parquet; descarga con verificación de versión e integridad; versión registrada.</td></tr>
+  <tr><td>Errores de digitación en tablas nutricionales (25 mil productos)</td><td>Anulación de la tabla completa y reglas de coherencia, sin imputar valores.</td></tr>
+  <tr><td>El modelo aprende los marcadores de NOVA</td><td>Análisis de términos y experimento sin marcadores para la entrega final.</td></tr>
+</table>
+
+<h3>Cronograma actualizado</h3>
+<table>
+  <tr><th>Fechas</th><th>Actividades</th><th>Entregable</th><th>Resp.</th></tr>
+  <tr><td>10–14 nov.</td><td>Anteproyecto, entorno, descarga y perfil de calidad</td><td class="ok">Hecho</td><td>CF / SS</td></tr>
+  <tr><td>15–21 nov.</td><td>Flujo PySpark bronce/plata/oro (CF); EDA, motor de sellos y primeros modelos (SS)</td><td class="ok">Hecho (este avance)</td><td>CF / SS</td></tr>
+  <tr><td>22–25 nov.</td><td>Fotos y validación de sellos; modelo sin marcadores y comparación con reglas NOVA (SS). API FastAPI por código de barras (CF)</td><td>Informe de validación; API funcional</td><td>SS / CF</td></tr>
+  <tr><td>26–28 nov.</td><td>Tablero Streamlit e integración con la API (CF); ajustes finales de modelos y limitaciones (SS)</td><td>Tablero y modelos finales</td><td>CF / SS</td></tr>
+  <tr><td>29 nov.–1 dic.</td><td>Pruebas integradas, informe final, conclusiones y sustentación</td><td>Informe final y presentación</td><td>CF / SS</td></tr>
+  <tr><td>Opcional</td><td>DistilBERT multilingüe (Colab), app con cámara/OCR, MongoDB</td><td>Si el tiempo lo permite</td><td>CF / SS</td></tr>
+</table>
+
+<h2>8. Aporte de cada integrante</h2>
+<table>
+  <tr><th style="width:30%">Integrante</th><th>Aporte en este avance</th></tr>
+  <tr><td>Carlos Alfonso Fernández Salas</td><td>Repositorio y entorno; descarga del volcado; capas bronce, plata y oro en PySpark; orquestación (<code>ejecutar_flujo.sh</code>) y pruebas automáticas; diagrama del flujo.</td></tr>
+  <tr><td>Santiago Sandoval Urrego</td><td>Análisis exploratorio e interpretación; motor de sellos según la Resolución 2492; entrenamiento y evaluación de los modelos (línea base, regresión logística, red neuronal, prueba de ruido) y K-means.</td></tr>
+</table>
+
+<h2>Referencias</h2>
+<div class="refs">
+<p>Congreso de la República de Colombia. (2021). <i>Ley 2120 de 2021</i>. Diario Oficial.</p>
+<p>Ministerio de Salud y Protección Social. (2022). <i>Resolución 2492 de 2022</i>. https://normograma.invima.gov.co/normograma/docs/pdf/resolucion_minsaludps_2492_2022.pdf</p>
+<p>Monteiro, C. A., Cannon, G., Levy, R. B., Moubarac, J.-C., Louzada, M. L. C., Rauber, F., Khandpur, N., Cediel, G., Neri, D., Martinez-Steele, E., Baraldi, L. G. y Jaime, P. C. (2019). Ultra-processed foods: What they are and how to identify them. <i>Public Health Nutrition, 22</i>(5), 936–941. https://doi.org/10.1017/S1368980018003762</p>
+<p>Open Food Facts. (2026). <i>Open Food Facts data exports</i> [Volcado del 18 de noviembre de 2026]. https://world.openfoodfacts.org/data</p>
+<p>Open Food Facts. (s. f.). <i>NOVA groups for food processing</i>. https://world.openfoodfacts.org/nova</p>
+<p>Organización Panamericana de la Salud. (2016). <i>Modelo de perfil de nutrientes de la Organización Panamericana de la Salud</i>. OPS.</p>
+<p>Wirth, R. y Hipp, J. (2000). CRISP-DM: Towards a standard process model for data mining. En <i>Proceedings of the 4th International Conference on the Practical Applications of Knowledge Discovery and Data Mining</i> (pp. 29–39).</p>
+<p>Zaharia, M. et al. (2016). Apache Spark: A unified engine for big data processing. <i>Communications of the ACM, 59</i>(11), 56–65. https://doi.org/10.1145/2934664</p>
+</div>
+
+</body>
+</html>
