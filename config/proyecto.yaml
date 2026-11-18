@@ -1,0 +1,38 @@
+# Parámetros generales del proyecto NutriScan CO.
+# Las rutas son relativas a la carpeta raíz del repositorio.
+
+fuente:
+  # Volcado CSV completo de Open Food Facts (~0,9 GB comprimido, ~9 GB descomprimido)
+  csv_url: "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz"
+  # API pública para consultar un producto por código de barras
+  api_url: "https://world.openfoodfacts.org/api/v2/product/{codigo}.json"
+  # Código colombiano de prueba usado en el anteproyecto
+  codigo_prueba: "7702011271662"
+
+rutas:
+  raw: "data/raw"
+  bronze: "data/bronze"
+  silver: "data/silver"
+  gold: "data/gold"
+  reportes: "reports"
+
+desarrollo:
+  # Mientras se desarrolla se trabaja con una muestra para ir rápido.
+  # Poner usar_muestra: false para procesar el volcado completo.
+  usar_muestra: true
+  filas_muestra: 200000
+
+paises:
+  objetivo: "en:colombia"
+  comparacion: ["en:chile", "en:mexico", "en:peru"]
+
+spark:
+  app_name: "NutriScanCO"
+  # Memoria del "driver" (el proceso que corre en tu PC). El equipo tiene 23 GB.
+  driver_memory: "8g"
+  shuffle_partitions: 16
+
+modelado:
+  semilla: 42
+  particion: { entrenamiento: 0.70, validacion: 0.15, prueba: 0.15 }
+  meta_f1: 0.80

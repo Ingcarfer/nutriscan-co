@@ -1,0 +1,29 @@
+# Datos: son pesados (GB) y se regeneran con los scripts. Se conserva la estructura.
+data/**
+!data/**/
+!data/**/.gitkeep
+
+# Modelos entrenados
+models/
+*.pt
+*.pkl
+
+# Entorno virtual y cachés de Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Spark
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Editor / sistema
+.vscode/
+.idea/
+.DS_Store
+
+# Secretos
+.env

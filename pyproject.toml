@@ -1,0 +1,10 @@
+[project]
+name = "nutriscan-co"
+version = "0.1.0"
+description = "Sellos de advertencia y nivel de procesamiento (NOVA) de alimentos empacados en Colombia con Open Food Facts"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+# Permite importar "nutriscan" desde src/ sin instalar el paquete
+pythonpath = ["src"]
+testpaths = ["tests"]

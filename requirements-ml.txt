@@ -1,0 +1,8 @@
+# Red neuronal (Bloque 4). Se separa porque PyTorch pesa varios GB.
+# En tu PC (solo CPU, versión liviana):
+#   pip install -r requirements-ml.txt --index-url https://download.pytorch.org/whl/cpu
+# En Google Colab ya viene instalado: no hace falta.
+torch==2.5.1
+
+# Opcional (Bloque 6): DistilBERT multilingüe, solo en Colab con GPU
+# transformers==4.46.3

@@ -1,0 +1,90 @@
+# =====================================================================
+# Umbrales de los sellos frontales de advertencia ("EXCESO EN")
+# Resolución 810 de 2021, artículo 32, modificado por la Resolución 2492 de 2022
+# (Modelo de Perfil de Nutrientes de la OPS, con ajustes colombianos).
+#
+# Si la norma cambia (por ejemplo, el proyecto de resolución de 2026),
+# basta con editar este archivo: el código no tiene umbrales "quemados".
+#
+# IMPORTANTE: antes de la entrega final, verificar cada valor contra el
+# texto oficial:
+# https://normograma.invima.gov.co/normograma/docs/pdf/resolucion_minsaludps_2492_2022.pdf
+# =====================================================================
+
+norma: "Resolución 2492 de 2022"
+vigente_desde: "2023-06-15"
+
+# Factores de Atwater para estimar la energía cuando el producto no la
+# reporta o la reporta mal (kcal por gramo de nutriente).
+energia_kcal_por_gramo:
+  carbohidratos: 4
+  proteinas: 4
+  grasas: 9
+
+sellos:
+  azucares:
+    leyenda: "EXCESO EN AZÚCARES"
+    # % de la energía total que proviene de azúcares libres (1 g = 4 kcal)
+    porcentaje_energia_minimo: 10
+    kcal_por_gramo: 4
+    # Open Food Facts solo trae azúcares TOTALES (no libres/añadidos):
+    # se usa como aproximación y se declara como limitación del estudio.
+    aproximacion: "azucares_totales"
+
+  grasas_saturadas:
+    leyenda: "EXCESO EN GRASAS SATURADAS"
+    porcentaje_energia_minimo: 10
+    kcal_por_gramo: 9
+
+  grasas_trans:
+    leyenda: "EXCESO EN GRASAS TRANS"
+    porcentaje_energia_minimo: 1
+    kcal_por_gramo: 9
+
+  sodio:
+    leyenda: "EXCESO EN SODIO"
+    # Se activa si se cumple CUALQUIERA de las dos condiciones:
+    mg_por_kcal_minimo: 1
+    mg_por_100g_minimo: 300
+    # Bebidas sin aporte calórico
+    bebidas_sin_calorias_mg_por_100ml_minimo: 40
+
+  edulcorantes:
+    leyenda: "CONTIENE EDULCORANTE. NO RECOMENDABLE EN NIÑOS"
+    # Se activa si la lista de ingredientes o de aditivos contiene alguno.
+    # Códigos E de Open Food Facts (campo additives_tags).
+    aditivos:
+      - "en:e420"   # sorbitol
+      - "en:e421"   # manitol
+      - "en:e950"   # acesulfame K
+      - "en:e951"   # aspartame
+      - "en:e952"   # ciclamato
+      - "en:e953"   # isomalt
+      - "en:e954"   # sacarina
+      - "en:e955"   # sucralosa
+      - "en:e957"   # taumatina
+      - "en:e959"   # neohesperidina DC
+      - "en:e960"   # glucósidos de esteviol (stevia)
+      - "en:e961"   # neotame
+      - "en:e962"   # sal de aspartame-acesulfame
+      - "en:e965"   # maltitol
+      - "en:e966"   # lactitol
+      - "en:e967"   # xilitol
+      - "en:e968"   # eritritol
+      - "en:e969"   # advantame
+    # Palabras para buscar en el texto de ingredientes (sin tildes, minúsculas)
+    palabras_clave:
+      - "edulcorante"
+      - "sucralosa"
+      - "aspartame"
+      - "aspartamo"
+      - "acesulfame"
+      - "sacarina"
+      - "ciclamato"
+      - "stevia"
+      - "estevia"
+      - "glucosidos de esteviol"
+      - "sorbitol"
+      - "maltitol"
+      - "xilitol"
+      - "eritritol"
