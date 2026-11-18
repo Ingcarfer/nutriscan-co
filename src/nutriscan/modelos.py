@@ -7,7 +7,8 @@ Uso (desde la raíz del repositorio):
 Modelos que se comparan:
   0. Línea base: siempre predice la clase más frecuente del entrenamiento.
   1. TF-IDF + regresión logística (modelo base del anteproyecto).
-  2. TF-IDF + red neuronal (perceptrón multicapa de Spark MLlib).
+  2. TF-IDF + red neuronal (perceptrón multicapa de Spark MLlib), sobre las
+     1000 variables más informativas según una prueba ANOVA.
 
 Siguiendo la retroalimentación de la docente, se reportan POR SEPARADO:
   - "global":   prueba con productos del mundo nunca vistos (15 %).
@@ -27,7 +28,8 @@ import time
 import pandas as pd
 from pyspark.ml import Pipeline, PipelineModel
 from pyspark.ml.classification import LogisticRegression, MultilayerPerceptronClassifier
-from pyspark.ml.feature import IDF, CountVectorizer, NGram, RegexTokenizer, SQLTransformer
+from pyspark.ml.feature import (IDF, CountVectorizer, NGram, RegexTokenizer, SQLTransformer,
+                                UnivariateFeatureSelector)
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
@@ -130,12 +132,24 @@ def main():
     t0 = time.time()
     lr = LogisticRegression(maxIter=lr_cfg["iteraciones"], regParam=lr_cfg["regularizacion"]).fit(tr)
     seg_lr = time.time() - t0
-    t0 = time.time()
-    rn = MultilayerPerceptronClassifier(
-        layers=[n_vars, *rn_cfg["capas_ocultas"], 2], maxIter=rn_cfg["iteraciones"],
-        blockSize=rn_cfg["tam_bloque"], seed=cfg["semilla"]).fit(tr)
-    seg_rn = time.time() - t0
     lr.write().overwrite().save(str(carpeta_modelos / "regresion_logistica"))
+
+    # Red neuronal: primero se eligen las variables más informativas (ANOVA),
+    # porque la red de Spark guarda los datos en forma densa (ver config).
+    t0 = time.time()
+    selector = UnivariateFeatureSelector(
+        featuresCol="features", outputCol="features_rn", labelCol="label",
+        selectionMode="numTopFeatures").setFeatureType("continuous").setLabelType("categorical") \
+        .setSelectionThreshold(rn_cfg["variables"]).fit(tr)
+    n_tr = tamaños["entrenamiento"]
+    tr_rn = tr.sample(min(1.0, rn_cfg["max_entrenamiento"] / n_tr), seed=cfg["semilla"]) if n_tr else tr
+    tr_rn = selector.transform(tr_rn).select(F.col("features_rn").alias("features"), "label")
+    rn = MultilayerPerceptronClassifier(
+        layers=[rn_cfg["variables"] if n_vars > rn_cfg["variables"] else n_vars,
+                *rn_cfg["capas_ocultas"], 2],
+        maxIter=rn_cfg["iteraciones"], blockSize=rn_cfg["tam_bloque"], seed=cfg["semilla"]).fit(tr_rn)
+    seg_rn = time.time() - t0
+    selector.write().overwrite().save(str(carpeta_modelos / "selector_red"))
     rn.write().overwrite().save(str(carpeta_modelos / "red_neuronal"))
 
     # Conjuntos de evaluación: limpios y con ruido
@@ -153,7 +167,8 @@ def main():
         modelos = {
             "linea_base": x.withColumn("prediction", F.lit(clase_mayoritaria)),
             "regresion_logistica": lr.transform(x),
-            "red_neuronal": rn.transform(x),
+            "red_neuronal": rn.transform(
+                selector.transform(x).select(F.col("features_rn").alias("features"), "label")),
         }
         for nombre_mod, pred in modelos.items():
             met = evaluar(pred)
@@ -175,7 +190,8 @@ def main():
         "proporcion_nova4_entrenamiento": round(prop_nova4, 4),
         "clase_mayoritaria": int(clase_mayoritaria),
         "segundos_entrenamiento": {"regresion_logistica": round(seg_lr, 1), "red_neuronal": round(seg_rn, 1)},
-        "capas_red": [n_vars, *rn_cfg["capas_ocultas"], 2],
+        "capas_red": rn.getLayers(),
+        "entrenamiento_red": tr_rn.count(),
         "segundos_total": round(time.time() - inicio, 1),
     }
     (salida / "resumen.json").write_text(json.dumps(resumen, indent=2, ensure_ascii=False))
@@ -184,11 +200,13 @@ def main():
 
 
 def cargar_modelos(spark=None):
-    """Para la API: devuelve (texto, regresion_logistica, red_neuronal)."""
+    """Para la API: devuelve (texto, regresion_logistica, selector_red, red_neuronal)."""
     from pyspark.ml.classification import LogisticRegressionModel, MultilayerPerceptronClassificationModel
+    from pyspark.ml.feature import UnivariateFeatureSelectorModel
     base = RAIZ / "models"
     return (PipelineModel.load(str(base / "texto")),
             LogisticRegressionModel.load(str(base / "regresion_logistica")),
+            UnivariateFeatureSelectorModel.load(str(base / "selector_red")),
             MultilayerPerceptronClassificationModel.load(str(base / "red_neuronal")))
 
 

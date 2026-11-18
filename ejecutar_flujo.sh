@@ -9,6 +9,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 export PYTHONPATH=src
+export PYTHONUNBUFFERED=1  # que el log se escriba línea a línea
 PY=.venv/bin/python
 mkdir -p reports/logs
 

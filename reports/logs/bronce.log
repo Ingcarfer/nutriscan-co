@@ -1,0 +1,16 @@
+=== bronce: inicio 2026-11-18 09:40:47 ===
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+{
+  "archivo_origen": "en.openfoodfacts.org.products.csv.gz",
+  "filas": 4921304,
+  "columnas_origen": 211,
+  "filas_sin_codigo": 0,
+  "bytes_parquet": 2371505339,
+  "segundos": 240.1,
+  "bytes_csv_gz": 1540715029,
+  "gb_csv_gz": 1.54,
+  "gb_parquet": 2.37
+}
+=== bronce: fin 2026-11-18 09:44:53 ===

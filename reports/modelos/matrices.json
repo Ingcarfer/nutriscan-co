@@ -1,0 +1,392 @@
+{
+  "linea_base|validacion": [
+    [
+      0,
+      56044
+    ],
+    [
+      0,
+      112912
+    ]
+  ],
+  "regresion_logistica|validacion": [
+    [
+      53852,
+      2192
+    ],
+    [
+      3682,
+      109230
+    ]
+  ],
+  "red_neuronal|validacion": [
+    [
+      52518,
+      3526
+    ],
+    [
+      6343,
+      106569
+    ]
+  ],
+  "linea_base|global": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global": [
+    [
+      53722,
+      2176
+    ],
+    [
+      3868,
+      109169
+    ]
+  ],
+  "red_neuronal|global": [
+    [
+      52406,
+      3492
+    ],
+    [
+      6275,
+      106762
+    ]
+  ],
+  "linea_base|colombia": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia": [
+    [
+      371,
+      63
+    ],
+    [
+      75,
+      1051
+    ]
+  ],
+  "red_neuronal|colombia": [
+    [
+      315,
+      119
+    ],
+    [
+      79,
+      1047
+    ]
+  ],
+  "linea_base|global_errores_10": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global_errores_10": [
+    [
+      53876,
+      2022
+    ],
+    [
+      6443,
+      106594
+    ]
+  ],
+  "red_neuronal|global_errores_10": [
+    [
+      52452,
+      3446
+    ],
+    [
+      8310,
+      104727
+    ]
+  ],
+  "linea_base|colombia_errores_10": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia_errores_10": [
+    [
+      375,
+      59
+    ],
+    [
+      90,
+      1036
+    ]
+  ],
+  "red_neuronal|colombia_errores_10": [
+    [
+      327,
+      107
+    ],
+    [
+      93,
+      1033
+    ]
+  ],
+  "linea_base|global_errores_20": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global_errores_20": [
+    [
+      54052,
+      1846
+    ],
+    [
+      9541,
+      103496
+    ]
+  ],
+  "red_neuronal|global_errores_20": [
+    [
+      52489,
+      3409
+    ],
+    [
+      10759,
+      102278
+    ]
+  ],
+  "linea_base|colombia_errores_20": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia_errores_20": [
+    [
+      382,
+      52
+    ],
+    [
+      114,
+      1012
+    ]
+  ],
+  "red_neuronal|colombia_errores_20": [
+    [
+      336,
+      98
+    ],
+    [
+      114,
+      1012
+    ]
+  ],
+  "linea_base|global_errores_30": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global_errores_30": [
+    [
+      54293,
+      1605
+    ],
+    [
+      13128,
+      99909
+    ]
+  ],
+  "red_neuronal|global_errores_30": [
+    [
+      52630,
+      3268
+    ],
+    [
+      13589,
+      99448
+    ]
+  ],
+  "linea_base|colombia_errores_30": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia_errores_30": [
+    [
+      392,
+      42
+    ],
+    [
+      143,
+      983
+    ]
+  ],
+  "red_neuronal|colombia_errores_30": [
+    [
+      330,
+      104
+    ],
+    [
+      134,
+      992
+    ]
+  ],
+  "linea_base|global_errores_50": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global_errores_50": [
+    [
+      54693,
+      1205
+    ],
+    [
+      23268,
+      89769
+    ]
+  ],
+  "red_neuronal|global_errores_50": [
+    [
+      52925,
+      2973
+    ],
+    [
+      21811,
+      91226
+    ]
+  ],
+  "linea_base|colombia_errores_50": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia_errores_50": [
+    [
+      401,
+      33
+    ],
+    [
+      222,
+      904
+    ]
+  ],
+  "red_neuronal|colombia_errores_50": [
+    [
+      353,
+      81
+    ],
+    [
+      216,
+      910
+    ]
+  ],
+  "linea_base|global_truncado_50": [
+    [
+      0,
+      55898
+    ],
+    [
+      0,
+      113037
+    ]
+  ],
+  "regresion_logistica|global_truncado_50": [
+    [
+      55270,
+      628
+    ],
+    [
+      38780,
+      74257
+    ]
+  ],
+  "red_neuronal|global_truncado_50": [
+    [
+      54307,
+      1591
+    ],
+    [
+      38925,
+      74112
+    ]
+  ],
+  "linea_base|colombia_truncado_50": [
+    [
+      0,
+      434
+    ],
+    [
+      0,
+      1126
+    ]
+  ],
+  "regresion_logistica|colombia_truncado_50": [
+    [
+      420,
+      14
+    ],
+    [
+      303,
+      823
+    ]
+  ],
+  "red_neuronal|colombia_truncado_50": [
+    [
+      380,
+      54
+    ],
+    [
+      258,
+      868
+    ]
+  ]
+}

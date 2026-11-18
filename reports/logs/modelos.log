@@ -1,0 +1,67 @@
+=== modelos: inicio 2026-11-18 09:55:22 ===
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Tamaños: {'entrenamiento': 400980, 'validacion': 168956, 'prueba': 168935, 'colombia': 1560}
+validacion               linea_base           F1=0.801 F1macro=0.401
+validacion               regresion_logistica  F1=0.974 F1macro=0.961
+validacion               red_neuronal         F1=0.956 F1macro=0.935
+global                   linea_base           F1=0.802 F1macro=0.401
+global                   regresion_logistica  F1=0.973 F1macro=0.960
+global                   red_neuronal         F1=0.956 F1macro=0.935
+colombia                 linea_base           F1=0.838 F1macro=0.419
+colombia                 regresion_logistica  F1=0.938 F1macro=0.891
+colombia                 red_neuronal         F1=0.914 F1macro=0.837
+global_errores_10        linea_base           F1=0.802 F1macro=0.401
+global_errores_10        regresion_logistica  F1=0.962 F1macro=0.945
+global_errores_10        red_neuronal         F1=0.947 F1macro=0.923
+colombia_errores_10      linea_base           F1=0.838 F1macro=0.419
+colombia_errores_10      regresion_logistica  F1=0.933 F1macro=0.884
+colombia_errores_10      red_neuronal         F1=0.912 F1macro=0.839
+global_errores_20        linea_base           F1=0.802 F1macro=0.401
+global_errores_20        regresion_logistica  F1=0.948 F1macro=0.926
+global_errores_20        red_neuronal         F1=0.935 F1macro=0.908
+colombia_errores_20      linea_base           F1=0.838 F1macro=0.419
+colombia_errores_20      regresion_logistica  F1=0.924 F1macro=0.873
+colombia_errores_20      red_neuronal         F1=0.905 F1macro=0.833
+global_errores_30        linea_base           F1=0.802 F1macro=0.401
+global_errores_30        regresion_logistica  F1=0.931 F1macro=0.906
+global_errores_30        red_neuronal         F1=0.922 F1macro=0.892
+colombia_errores_30      linea_base           F1=0.838 F1macro=0.419
+colombia_errores_30      regresion_logistica  F1=0.914 F1macro=0.862
+colombia_errores_30      red_neuronal         F1=0.893 F1macro=0.814
+global_errores_50        linea_base           F1=0.802 F1macro=0.401
+global_errores_50        regresion_logistica  F1=0.880 F1macro=0.849
+global_errores_50        red_neuronal         F1=0.880 F1macro=0.845
+colombia_errores_50      linea_base           F1=0.838 F1macro=0.419
+colombia_errores_50      regresion_logistica  F1=0.876 F1macro=0.818
+colombia_errores_50      red_neuronal         F1=0.860 F1macro=0.782
+global_truncado_50       linea_base           F1=0.802 F1macro=0.401
+global_truncado_50       regresion_logistica  F1=0.790 F1macro=0.764
+global_truncado_50       red_neuronal         F1=0.785 F1macro=0.757
+colombia_truncado_50     linea_base           F1=0.838 F1macro=0.419
+colombia_truncado_50     regresion_logistica  F1=0.839 F1macro=0.782
+colombia_truncado_50     red_neuronal         F1=0.848 F1macro=0.778
+{
+  "tamaños": {
+    "entrenamiento": 400980,
+    "validacion": 168956,
+    "prueba": 168935,
+    "colombia": 1560
+  },
+  "variables_tfidf": 5000,
+  "proporcion_nova4_entrenamiento": 0.6685,
+  "clase_mayoritaria": 1,
+  "segundos_entrenamiento": {
+    "regresion_logistica": 22.4,
+    "red_neuronal": 909.0
+  },
+  "capas_red": [
+    1000,
+    64,
+    2
+  ],
+  "entrenamiento_red": 199529,
+  "segundos_total": 1082.7
+}
+=== modelos: fin 2026-11-18 10:13:26 ===

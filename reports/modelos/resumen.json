@@ -1,0 +1,22 @@
+{
+  "tamaños": {
+    "entrenamiento": 400980,
+    "validacion": 168956,
+    "prueba": 168935,
+    "colombia": 1560
+  },
+  "variables_tfidf": 5000,
+  "proporcion_nova4_entrenamiento": 0.6685,
+  "clase_mayoritaria": 1,
+  "segundos_entrenamiento": {
+    "regresion_logistica": 22.4,
+    "red_neuronal": 909.0
+  },
+  "capas_red": [
+    1000,
+    64,
+    2
+  ],
+  "entrenamiento_red": 199529,
+  "segundos_total": 1082.7
+}

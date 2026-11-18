@@ -8,7 +8,8 @@ Uso (desde la raíz del repositorio):
 - Se aplica log(1 + x) porque los nutrientes son muy asimétricos (muchos valores
   bajos y pocos muy altos), y luego se estandariza (media 0, desviación 1) para
   que ninguna variable pese más solo por su escala (las kcal llegan a 900).
-- Se prueba k = 2..10 y se elige el k con mejor coeficiente de silueta.
+- Se prueba k = 2..10 y se elige, entre k >= 3, el de mejor coeficiente de
+  silueta (k = 2 solo separa productos livianos de densos: no aporta).
 
 Salidas en reports/segmentacion/: silueta.csv, perfiles.csv, colombia_por_grupo.csv
 """
@@ -62,7 +63,8 @@ def main():
         print(f"k={k}: silueta={sil:.4f}")
     pd.DataFrame(resultados).to_csv(salida / "silueta.csv", index=False)
 
-    mejor_k = max(resultados, key=lambda r: r["silueta"])["k"]
+    candidatos = [r for r in resultados if r["k"] >= km["k_min_eleccion"]]
+    mejor_k = max(candidatos, key=lambda r: r["silueta"])["k"]
     final = KMeans(k=mejor_k, seed=cfg["semilla"], featuresCol="features").fit(x)
     asignado = final.transform(x).withColumnRenamed("prediction", "grupo")
 
@@ -78,7 +80,7 @@ def main():
         .toPandas().to_csv(salida / "colombia_por_grupo.csv", index=False)
 
     resumen = {"productos_con_perfil_completo": total, "productos_usados": n, "mejor_k": mejor_k,
-               "silueta_mejor_k": max(r["silueta"] for r in resultados),
+               "silueta_mejor_k": max(r["silueta"] for r in candidatos),
                "segundos": round(time.time() - inicio, 1)}
     (salida / "resumen.json").write_text(json.dumps(resumen, indent=2, ensure_ascii=False))
     print(json.dumps(resumen, indent=2, ensure_ascii=False))

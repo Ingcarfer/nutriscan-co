@@ -1,0 +1,36 @@
+=== plata: inicio 2026-11-18 09:44:53 ===
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+{
+  "filas_bronce": 4921304,
+  "codigo_invalido": 71691,
+  "duplicados_eliminados": 53,
+  "tablas_nutricionales_anuladas": 25076,
+  "fat_100g_fuera_de_rango": 5744,
+  "saturated_fat_100g_fuera_de_rango": 1063,
+  "trans_fat_100g_fuera_de_rango": 33,
+  "carbohydrates_100g_fuera_de_rango": 12658,
+  "sugars_100g_fuera_de_rango": 5872,
+  "added_sugars_100g_fuera_de_rango": 986,
+  "fiber_100g_fuera_de_rango": 668,
+  "proteins_100g_fuera_de_rango": 1778,
+  "salt_100g_fuera_de_rango": 2418,
+  "sodium_100g_fuera_de_rango": 1519,
+  "energy_kcal_100g_fuera_de_rango": 16190,
+  "energy_kj_100g_fuera_de_rango": 1990,
+  "nova_group_fuera_de_rango": 0,
+  "saturated_fat_100g_mayor_que_fat_100g": 2322,
+  "trans_fat_100g_mayor_que_fat_100g": 147,
+  "sugars_100g_mayor_que_carbohydrates_100g": 3756,
+  "sodio_derivado_de_sal": 3,
+  "energia_por_origen": {
+    "calculada_atwater": 2140,
+    "convertida_kj": 7277,
+    "reportada_kcal": 3453996,
+    "sin_dato": 1386147
+  },
+  "filas_plata": 4849560,
+  "segundos": 182.4
+}
+=== plata: fin 2026-11-18 09:47:57 ===

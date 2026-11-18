@@ -1,0 +1,11 @@
+{
+  "archivo_origen": "en.openfoodfacts.org.products.csv.gz",
+  "filas": 4921304,
+  "columnas_origen": 211,
+  "filas_sin_codigo": 0,
+  "bytes_parquet": 2371505339,
+  "segundos": 240.1,
+  "bytes_csv_gz": 1540715029,
+  "gb_csv_gz": 1.54,
+  "gb_parquet": 2.37
+}

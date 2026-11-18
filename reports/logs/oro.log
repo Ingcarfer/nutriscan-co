@@ -1,0 +1,15 @@
+=== oro: inicio 2026-11-18 09:53:25 ===
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+{
+  "productos_colombia": 10106,
+  "con_ingredientes": 1910,
+  "con_nova": 1641,
+  "con_ingredientes_y_nova": 1560,
+  "evaluables_para_sellos": 3863,
+  "evaluables_y_aplica": 3754,
+  "productos_mundo": 4849560,
+  "segundos": 115.8
+}
+=== oro: fin 2026-11-18 09:55:22 ===
