@@ -1,0 +1,21 @@
+=== segmentacion: inicio 2026-11-18 10:13:26 ===
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+k=2: silueta=0.4493
+k=3: silueta=0.3824
+k=4: silueta=0.3798
+k=5: silueta=0.4000
+k=6: silueta=0.3886
+k=7: silueta=0.3719
+k=8: silueta=0.4095
+k=9: silueta=0.4260
+k=10: silueta=0.4142
+{
+  "productos_con_perfil_completo": 2730572,
+  "productos_usados": 503573,
+  "mejor_k": 9,
+  "silueta_mejor_k": 0.426,
+  "segundos": 180.1
+}
+=== segmentacion: fin 2026-11-18 10:16:28 ===

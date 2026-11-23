@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 330" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <style>
+      .caja{stroke:#333;stroke-width:1.2;rx:8}
+      .t{font-size:13px;font-weight:bold;fill:#111}
+      .s{font-size:10.5px;fill:#333}
+      .n{font-size:10px;fill:#666;font-style:italic}
+      .flecha{stroke:#555;stroke-width:1.6;fill:none;marker-end:url(#f)}
+      .etq{font-size:11px;font-weight:bold;fill:#fff}
+    </style>
+  </defs>
+
+  <!-- Etapas -->
+  <rect x="5" y="8" width="990" height="22" fill="#2b2b2b" rx="4"/>
+  <text x="85" y="23" class="etq" text-anchor="middle">1. INGESTA</text>
+  <text x="300" y="23" class="etq" text-anchor="middle">2. ALMACENAMIENTO (data lake por capas, Parquet)</text>
+  <text x="640" y="23" class="etq" text-anchor="middle">3. PROCESAMIENTO Y MODELADO (PySpark)</text>
+  <text x="900" y="23" class="etq" text-anchor="middle">4. CONSUMO</text>
+
+  <!-- Fuente -->
+  <rect x="10" y="50" width="150" height="110" class="caja" fill="#fde7c8"/>
+  <text x="85" y="72" class="t" text-anchor="middle">Open Food Facts</text>
+  <text x="85" y="90" class="s" text-anchor="middle">CSV (TSV) .gz · 1,54 GB</text>
+  <text x="85" y="104" class="s" text-anchor="middle">14,0 GB descomprimido</text>
+  <text x="85" y="118" class="s" text-anchor="middle">4,92 M filas · 211 col.</text>
+  <text x="85" y="140" class="n" text-anchor="middle">descarga.py (reanudable)</text>
+
+  <!-- Bronce -->
+  <rect x="200" y="50" width="190" height="62" class="caja" fill="#e8c9a8"/>
+  <text x="295" y="70" class="t" text-anchor="middle">Bronce</text>
+  <text x="295" y="86" class="s" text-anchor="middle">datos crudos, todo como texto</text>
+  <text x="295" y="100" class="s" text-anchor="middle">2,37 GB · 32 archivos</text>
+
+  <!-- Plata -->
+  <rect x="200" y="132" width="190" height="62" class="caja" fill="#d9dde3"/>
+  <text x="295" y="152" class="t" text-anchor="middle">Plata</text>
+  <text x="295" y="168" class="s" text-anchor="middle">limpios, tipados, 43 col.</text>
+  <text x="295" y="182" class="s" text-anchor="middle">particionado por país</text>
+
+  <!-- Oro -->
+  <rect x="200" y="214" width="190" height="62" class="caja" fill="#f3dc8a"/>
+  <text x="295" y="234" class="t" text-anchor="middle">Oro</text>
+  <text x="295" y="250" class="s" text-anchor="middle">productos + sellos</text>
+  <text x="295" y="264" class="s" text-anchor="middle">indicadores (CSV pequeños)</text>
+
+  <!-- Procesos -->
+  <rect x="440" y="50" width="200" height="62" class="caja" fill="#ffffff"/>
+  <text x="540" y="70" class="t" text-anchor="middle">bronce.py → plata.py</text>
+  <text x="540" y="86" class="s" text-anchor="middle">códigos, duplicados, valores</text>
+  <text x="540" y="100" class="s" text-anchor="middle">imposibles, sodio, energía</text>
+
+  <rect x="440" y="132" width="200" height="62" class="caja" fill="#ffffff"/>
+  <text x="540" y="152" class="t" text-anchor="middle">oro.py + sellos.py</text>
+  <text x="540" y="168" class="s" text-anchor="middle">motor de reglas Res. 2492</text>
+  <text x="540" y="182" class="s" text-anchor="middle">umbrales en sellos.yaml</text>
+
+  <rect x="670" y="132" width="150" height="62" class="caja" fill="#ffffff"/>
+  <text x="745" y="152" class="t" text-anchor="middle">modelos.py</text>
+  <text x="745" y="168" class="s" text-anchor="middle">TF-IDF + Reg. logística</text>
+  <text x="745" y="182" class="s" text-anchor="middle">TF-IDF + red neuronal</text>
+
+  <rect x="670" y="214" width="150" height="62" class="caja" fill="#ffffff"/>
+  <text x="745" y="234" class="t" text-anchor="middle">segmentacion.py</text>
+  <text x="745" y="250" class="s" text-anchor="middle">K-means + silueta</text>
+  <text x="745" y="264" class="s" text-anchor="middle">(Spark MLlib)</text>
+
+  <!-- Consumo -->
+  <rect x="850" y="50" width="140" height="62" class="caja" fill="#dff0d8"/>
+  <text x="920" y="70" class="t" text-anchor="middle">Notebooks EDA</text>
+  <text x="920" y="86" class="s" text-anchor="middle">y modelos</text>
+  <text x="920" y="100" class="s" text-anchor="middle">(salidas visibles)</text>
+
+  <rect x="850" y="132" width="140" height="62" class="caja" fill="#dff0d8"/>
+  <text x="920" y="152" class="t" text-anchor="middle">Informes</text>
+  <text x="920" y="168" class="s" text-anchor="middle">reports/*.json, logs,</text>
+  <text x="920" y="182" class="s" text-anchor="middle">figuras</text>
+
+  <rect x="850" y="214" width="140" height="62" class="caja" fill="#ffffff" stroke-dasharray="5,4"/>
+  <text x="920" y="234" class="t" text-anchor="middle">API + tablero</text>
+  <text x="920" y="250" class="s" text-anchor="middle">FastAPI · Streamlit</text>
+  <text x="920" y="264" class="n" text-anchor="middle">(pendiente)</text>
+
+  <!-- Flechas -->
+  <path d="M160,81 L198,81" class="flecha"/>
+  <path d="M390,81 L438,81" class="flecha"/>
+  <path d="M540,112 C540,140 420,150 392,160" class="flecha"/>
+  <path d="M390,163 L438,163" class="flecha"/>
+  <path d="M540,194 C540,230 420,240 392,245" class="flecha"/>
+  <path d="M390,245 C560,245 600,180 668,165" class="flecha"/>
+  <path d="M390,252 L668,248" class="flecha"/>
+  <path d="M820,163 L848,163" class="flecha"/>
+  <path d="M820,245 L848,245" class="flecha"/>
+  <path d="M920,132 L920,114" class="flecha"/>
+
+  <text x="500" y="312" class="n" text-anchor="middle">Orquestado por ejecutar_flujo.sh · Spark 4.0.1 local (8 núcleos, 12 GB) · cada paso deja su log en reports/logs/</text>
+</svg>

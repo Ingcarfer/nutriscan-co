@@ -75,6 +75,18 @@ pytest
 
 Todas las pruebas deben salir en verde (`passed`).
 
+## Ejecutar el flujo completo
+
+```bash
+bash ejecutar_flujo.sh                      # descarga, bronce, plata, oro, modelos, segmentacion
+bash ejecutar_flujo.sh oro modelos          # solo algunos pasos
+```
+
+Necesita unos 10 GB de disco y tarda alrededor de 35 minutos (más la descarga de 1,5 GB).
+Cada paso guarda su registro en `reports/logs/`. Los resultados se ven en
+`notebooks/01_eda.ipynb` y `notebooks/02_modelos.ipynb`. El informe de avance está en
+`docs/avance/` (se genera desde `avance.html` con Chrome: Imprimir → Guardar como PDF).
+
 ## Configuración
 
 - `config/proyecto.yaml`: rutas, tamaño de la muestra de desarrollo, países y memoria de Spark.

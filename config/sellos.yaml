@@ -30,6 +30,38 @@ sellos:
     # Open Food Facts solo trae azúcares TOTALES (no libres/añadidos):
     # se usa como aproximación y se declara como limitación del estudio.
     aproximacion: "azucares_totales"
+    # Ajuste: si se conocen los ingredientes y NINGUNO es un azúcar añadido,
+    # el azúcar es intrínseco (lactosa de la leche, fruta) y no hay sello.
+    # Si no hay ingredientes, se mantiene la aproximación con azúcares totales.
+    # Texto en minúscula y sin tildes (varios idiomas, porque la base es mundial).
+    palabras_azucar_anadido:
+      - "azucar"
+      - "sugar"
+      - "sucre"
+      - "zucker"
+      - "acucar"
+      - "zucchero"
+      - "jarabe"
+      - "syrup"
+      - "sirope"
+      - "sirop"
+      - "miel"
+      - "honey"
+      - "panela"
+      - "melaza"
+      - "molasses"
+      - "dextrosa"
+      - "dextrose"
+      - "glucosa"
+      - "glucose"
+      - "fructosa"
+      - "fructose"
+      - "sacarosa"
+      - "sucrose"
+      - "maltodextrina"
+      - "maltodextrin"
+      - "concentrado de jugo"
+      - "concentrado de fruta"
 
   grasas_saturadas:
     leyenda: "EXCESO EN GRASAS SATURADAS"

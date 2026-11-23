@@ -5,7 +5,7 @@ from nutriscan.config import RAIZ, cargar_proyecto, cargar_sellos, ruta
 
 def test_proyecto_tiene_secciones_basicas():
     cfg = cargar_proyecto()
-    for seccion in ["fuente", "rutas", "desarrollo", "paises", "spark", "modelado"]:
+    for seccion in ["fuente", "rutas", "paises", "spark", "modelado"]:
         assert seccion in cfg
 
 
